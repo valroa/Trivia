@@ -17,8 +17,7 @@ public class PartidaDAOImpl implements PartidaDAO {
     @Override
     public void crear(Partida partida) {
 
-        String sql = "INSERT INTO PARTIDA(id_jugador,id_categoria,dificultad,puntaje_total,aciertos,total_preguntas) VALUES (?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO PARTIDA(id_jugador,id_categoria,dificultad,puntaje_total,aciertos,total_preguntas,tiempo_duracion) VALUES (?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, partida.getId_jugador());
@@ -27,6 +26,7 @@ public class PartidaDAOImpl implements PartidaDAO {
             stmt.setInt(4, partida.getPuntaje_total());
             stmt.setInt(5, partida.getAciertos());
             stmt.setInt(6, partida.getTotal_preguntas());
+            stmt.setInt(7, partida.getTiempo_duracion());
 
             stmt.executeUpdate();
 
@@ -55,7 +55,8 @@ public class PartidaDAOImpl implements PartidaDAO {
                         rs.getString("dificultad"),
                         rs.getInt("puntaje_total"),
                         rs.getInt("aciertos"),
-                        rs.getInt("total_preguntas")
+                        rs.getInt("total_preguntas"),
+                        rs.getInt("tiempo_duracion")
                 );
             }
 
@@ -69,7 +70,7 @@ public class PartidaDAOImpl implements PartidaDAO {
     @Override
     public void actualizar(Partida partida) {
 
-        String sql = "UPDATE PARTIDA SET id_jugador=?, id_categoria=?, dificultad=?, puntaje_total=?, aciertos=?, total_preguntas=? WHERE id_partida=?";
+        String sql = "UPDATE PARTIDA SET id_jugador=?, id_categoria=?, dificultad=?, puntaje_total=?, aciertos=?, total_preguntas=?, tiempo_duracion=? WHERE id_partida=?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -79,7 +80,8 @@ public class PartidaDAOImpl implements PartidaDAO {
             stmt.setInt(4, partida.getPuntaje_total());
             stmt.setInt(5, partida.getAciertos());
             stmt.setInt(6, partida.getTotal_preguntas());
-            stmt.setInt(7, partida.getId_partida());
+            stmt.setInt(7, partida.getTiempo_duracion());
+            stmt.setInt(8, partida.getId_partida());
 
             stmt.executeUpdate();
 
@@ -123,7 +125,8 @@ public class PartidaDAOImpl implements PartidaDAO {
                         rs.getString("dificultad"),
                         rs.getInt("puntaje_total"),
                         rs.getInt("aciertos"),
-                        rs.getInt("total_preguntas")
+                        rs.getInt("total_preguntas"),
+                        rs.getInt("tiempo_duracion")
                 ));
             }
 

@@ -9,11 +9,12 @@ public class Partida {
     private int puntaje_total;
     private int aciertos;
     private int total_preguntas;
+    private int tiempo_duracion;
 
     public Partida() {
     }
 
-    public Partida(int id_partida, int id_jugador, int id_categoria, String dificultad, int puntaje_total, int aciertos, int total_preguntas) {
+    public Partida(int id_partida, int id_jugador, int id_categoria, String dificultad, int puntaje_total, int aciertos, int total_preguntas, int tiempo_duracion) {
         this.id_partida = id_partida;
         this.id_jugador = id_jugador;
         this.id_categoria = id_categoria;
@@ -21,6 +22,16 @@ public class Partida {
         this.puntaje_total = puntaje_total;
         this.aciertos = aciertos;
         this.total_preguntas = total_preguntas;
+        this.tiempo_duracion = tiempo_duracion;
+    }
+
+
+    public int getTiempo_duracion() {
+        return tiempo_duracion;
+    }
+
+    public void setTiempo_duracion(int tiempo_duracion) {
+        this.tiempo_duracion = tiempo_duracion;
     }
 
     public int getId_partida() {
@@ -89,6 +100,7 @@ public class Partida {
                 ", puntaje_total=" + puntaje_total +
                 ", aciertos=" + aciertos +
                 ", total_preguntas=" + total_preguntas +
+                ", tiempo_duracion=" + tiempo_duracion +
                 '}';
     }
 }
