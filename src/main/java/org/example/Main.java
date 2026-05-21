@@ -13,6 +13,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Scanner scanner = new Scanner(System.in);
+
         try (Connection connection = ConexionBD.obtenerConexion()) {
 
             JugadorDAO jugadorDAO = new JugadorDAOImpl(connection);
@@ -21,8 +23,8 @@ public class Main {
             PartidaDAO partidaDAO = new PartidaDAOImpl(connection);
             RespuestaDAO respuestaDAO = new RespuestaDAOImpl(connection);
             RankingDAO rankingDAO = new RankingDAOImpl(connection);
+            JuegoTriviaDAO juegoTriviaDAO = new JuegoTriviaDAOImpl(jugadorDAO, categoriaDAO, preguntaDAO, partidaDAO, respuestaDAO, rankingDAO, scanner);
 
-            Scanner scanner = new Scanner(System.in);
 
             int opcion;
 
@@ -35,6 +37,8 @@ public class Main {
                 System.out.println("4. Menu Partida");
                 System.out.println("5. Menu Respuesta");
                 System.out.println("6. Menu Ranking");
+                System.out.println("7. Jugar Trivia");
+                System.out.println("8. Ver Ranking");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opcion: ");
 
@@ -308,6 +312,11 @@ public class Main {
                             switch (opPregunta) {
 
                                 case 1:
+                                    System.out.println("    CATEGORIAS DISPONIBLES    ");
+                                    List<Categoria> categoriasDisponibles = categoriaDAO.listar();
+                                    for (Categoria cat : categoriasDisponibles) {
+                                        System.out.println(cat.getId_categoria() + ". " + cat.getNombre());
+                                    }
                                     System.out.print("ID categoria: ");
                                     int idCategoria = scanner.nextInt();
                                     scanner.nextLine();
@@ -460,15 +469,27 @@ public class Main {
                             switch (opPartida) {
 
                                 case 1:
+                                    System.out.println("    JUGADORES DISPONIBLES    ");
+                                    List<Jugador> jugadoresDisponibles = jugadorDAO.listar();
+                                    for (Jugador jug : jugadoresDisponibles) {
+                                        System.out.println(jug.getId_jugador() + ". " + jug.getNombre());
+                                    }
                                     System.out.print("ID del jugador: ");
                                     int idJugador = scanner.nextInt();
 
+                                    System.out.println("    CATEGORIAS DISPONIBLES    ");
+                                    List<Categoria> categoriasDisponibles = categoriaDAO.listar();
+                                    for (Categoria cat : categoriasDisponibles) {
+                                        System.out.println(cat.getId_categoria() + ". " + cat.getNombre());
+                                    }
                                     System.out.print("ID de la categoria: ");
                                     int idCategoria = scanner.nextInt();
                                     scanner.nextLine();
 
+                                    //De esta manera se recibira correctamente en el MySQL
                                     System.out.print("Dificultad (facil/medio/dificil): ");
-                                    String dif = scanner.nextLine();
+                                    String difInput = scanner.nextLine();
+                                    String dif = difInput.substring(0, 1).toUpperCase() + difInput.substring(1).toLowerCase();
 
                                     System.out.print("Puntaje total: ");
                                     int puntajeTotal = scanner.nextInt();
@@ -610,6 +631,11 @@ public class Main {
                             switch (opRespuesta) {
 
                                 case 1:
+                                    System.out.println("=== PARTIDAS DISPONIBLES ===");
+                                    List<Partida> partidasDisp = partidaDAO.listar();
+                                    for (Partida part : partidasDisp) {
+                                        System.out.println(part.getId_partida() + ". Jugador " + part.getId_jugador() + " | " + part.getDificultad() + " | $" + part.getPuntaje_total());
+                                    }
                                     System.out.print("ID de la partida: ");
                                     int idPartida = scanner.nextInt();
 
@@ -848,6 +874,13 @@ public class Main {
 
                         break;
 
+                    case 7:
+                        juegoTriviaDAO.iniciarJuego();
+                        break;
+
+                    case 8:
+                        juegoTriviaDAO.mostrarRanking();
+                        break;
 
                     case 0:
 
